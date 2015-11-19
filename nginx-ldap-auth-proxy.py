@@ -41,7 +41,7 @@ def process_request(path):
     #
     auth = flask.request.authorization
     if auth:
-        service = flask.request.headers.get('X-SB-SERVICE')
+        service = flask.request.headers.get('X-NLAP-SERVICE')
         if _verify_user(auth.username, auth.password, service):
             return 'OK'
 
