@@ -1,0 +1,26 @@
+###
+### NGINX configuration example
+###
+
+server {
+    listen       80;
+    server_name  example.com;
+
+    location / {
+        # `auth_request` instructs NGINX to use client authorization
+        # based on response of subrequest
+
+        auth_request /ldap-auth-proxy;
+        root   /usr/share/nginx/html;
+        index  index.html index.htm;
+    }
+
+    location = /ldap-auth-proxy {
+        # authorization requests are forwarded here,
+        # and then the request will be sent to authorization proxy running on `172.16.0.100:8000`.
+
+        proxy_pass http://192.168.0.100:8000
+        proxy_pass_request_body off;
+        proxy_set_header 'X-SB-SERVICE' 'wiki.service.local';
+    }
+}
